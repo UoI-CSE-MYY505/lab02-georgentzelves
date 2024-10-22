@@ -10,17 +10,20 @@ array: .word 1, 0, 1, 12, 0, 1, 4
     li a2, 1
 prog:
 #-----------------------------
-beq  a1, zero, ret0
-    slli s0, a1, 2
-    add  s0, s0, a0 
-loop:
-    addi s0, s0, -4 
-    lw   t1, 0(s0)
-    beq  t1, a2, done
-    bne  s0, a0, loop
-ret0:
-    add  s0, zero, zero
+    add s0, zero, zero
 
+loop:
+    beq a1, zero, done
+    lw   t0, 0(s0)
+    addi a1, a1, -1
+    beq t0, a2, exitLoop
+    addi a0, a0, 4
+    j loop
+
+exitLoop:
+    add s0, a0, zero
+    addi a0, a0, 4
+    j loop
 #-----------------------------
 done:
     addi a7, zero, 10 
